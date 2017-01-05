@@ -58,6 +58,19 @@
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 		</license>
 	</licenses>
+   <developers>
+		<developer>
+			<name>Jeff Skjonsby</name>
+			<email>jskjons@rei.com</email>
+			<organization>REI</organization>
+			<organizationUrl>https://www.rei.com</organizationUrl>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:git:git://github.com/rei/oss-parent.git</connection>
+		<developerConnection>scm:git:ssh://github.com:rei/oss-parent.git</developerConnection>
+		<url>http://github.com/simpligility/rei/aether-utils</url>
+	</scm>
 	<profiles>
 		<profile>
 			<id>release</id>
