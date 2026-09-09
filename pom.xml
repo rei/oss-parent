@@ -3,12 +3,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>9</version>
-	</parent>
-
 	<groupId>com.rei.oss</groupId>
 	<artifactId>oss-parent</artifactId>
 	<version>${revision}</version>
@@ -16,14 +10,17 @@
 
 	<name>REI OSS Parent</name>
 	<description>Parent POM for REI Open Source Projects</description>
+	<url>https://github.com/rei/oss-parent</url>
 
 	<properties>
 		<revision>99999-SNAPSHOT</revision>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
 		<maven-source-plugin.version>3.3.0</maven-source-plugin.version>
 		<maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
 		<maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
+		<central-publishing-plugin.version>0.11.0</central-publishing-plugin.version>
 		<java.version>11</java.version>
 	</properties>
 
@@ -56,6 +53,17 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>${central-publishing-plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<publishingServerId>central</publishingServerId>
+					<autoPublish>true</autoPublish>
+					<waitUntil>published</waitUntil>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -122,6 +130,25 @@
 								</goals>
 							</execution>
 						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<!-- Opt-in profile to stage a release without auto-publishing, so it can be reviewed
+			     and manually published (or dropped) at
+			     https://central.sonatype.com/publishing/deployments, since publishing is otherwise
+				 irreversible. Activate alongside "release", e.g. -Prelease,central-manual-publish. -->
+			<id>central-manual-publish</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.sonatype.central</groupId>
+						<artifactId>central-publishing-maven-plugin</artifactId>
+						<configuration>
+							<autoPublish>false</autoPublish>
+							<waitUntil>validated</waitUntil>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
